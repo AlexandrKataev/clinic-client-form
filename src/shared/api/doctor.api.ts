@@ -3,6 +3,7 @@ import { api } from "./base-api/base.api";
 interface Doctor {
   id: string;
   name: string;
+  avatar: string;
 }
 
 // запросы для работы с автозаполнением (dadata.ru)

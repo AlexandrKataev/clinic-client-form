@@ -6,6 +6,7 @@ import {
   DatePicker,
   Flex,
   Form,
+  Image,
   Input,
   notification,
   Radio,
@@ -120,15 +121,35 @@ export const CreateClientPage = () => {
         />
       </Form.Item>
       <Form.Item name="doctor" label="Лечащий врач">
-        <Select
-          placeholder="Лечащий врач"
-          options={doctors?.map((doctor) => {
-            return { value: doctor.name };
+        <Select placeholder="Лечащий врач" style={{ height: "50px" }}>
+          {doctors?.map((doctor) => {
+            return (
+              <Select.Option key={doctor.id} style={{ padding: "10px" }}>
+                <Flex gap={10}>
+                  <Image
+                    src={doctor.avatar}
+                    preview={false}
+                    width={30}
+                    style={{
+                      borderRadius: "50%",
+                      overflow: "hidden",
+                    }}
+                  />
+                  <span>{doctor.name}</span>
+                </Flex>
+              </Select.Option>
+            );
           })}
-        />
+        </Select>
       </Form.Item>
       <Flex justify="center">
-        <Button htmlType="submit" type="primary" loading={isLoading}>
+        <Button
+          htmlType="submit"
+          type="primary"
+          loading={isLoading}
+          size="large"
+          shape="round"
+        >
           Сохранить клиента
         </Button>
       </Flex>

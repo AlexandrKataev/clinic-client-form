@@ -6,7 +6,7 @@ export const requiredRule: Rule = {
 };
 
 export const nameRule: Rule = {
-  min: 2,
-  max: 20,
-  message: "Имя должно содержать от 2 до 100 символов",
+  min: 6,
+  max: 50,
+  message: "Имя должно содержать от 6 до 50 символов",
 };

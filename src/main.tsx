@@ -16,10 +16,12 @@ createRoot(document.getElementById("root")!).render(
       locale={ru_RU}
       theme={{
         components: {
+          Button: { colorPrimary: "#6288eb", fontSizeLG: 15 },
           Input: {
-            colorPrimary: "yellow",
+            // colorPrimary: "yellow",
             colorError: redColor,
-            colorBorder: "yellow",
+            colorTextLabel: "yellow",
+            colorInfoText: "red",
             borderRadius: 10,
             fontSize: 12,
           },
@@ -35,7 +37,7 @@ createRoot(document.getElementById("root")!).render(
             borderRadius: 10,
             fontSize: 14,
           },
-          Form: { colorError: redColor, labelFontSize: 12 },
+          Form: { colorError: redColor, labelFontSize: 13 },
         },
       }}
     >
