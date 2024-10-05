@@ -16,7 +16,7 @@ export const autocompleteApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getNameSuggestions: builder.query<NameAutocompleteOption[], string>({
       query: (name) => ({
-        url: `http://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/fio`,
+        url: `https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/fio`,
         body: { query: name },
         method: "POST",
       }),
