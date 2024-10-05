@@ -1,26 +1,18 @@
 import { api } from "./base-api/base.api";
 
-interface NameAutocompleteOption {
-  value: string;
-  unrestricted_value: string;
-  data: {
-    surname: null | string;
-    name: null | string;
-    patronymic: null | string;
-    gender: null | "MALE" | "FEMALE";
-  };
+interface Doctor {
+  id: string;
+  name: string;
 }
 
 // запросы для работы с автозаполнением (dadata.ru)
 export const doctorApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    getAllDoctors: builder.query<NameAutocompleteOption[], string>({
-      query: (name) => ({
-        url: `https://632a05584c626ff832cfe7bb.mockapi.io/options`,
-        body: { query: name },
-        method: "POST",
+    getAllDoctors: builder.query<Doctor[], void>({
+      query: () => ({
+        url: `https://632a05584c626ff832cfe7bb.mockapi.io/doctors`,
+        method: "GET",
       }),
-      transformResponse: (res) => res.suggestions,
     }),
   }),
 });
