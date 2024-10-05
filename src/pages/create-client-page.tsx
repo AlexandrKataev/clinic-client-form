@@ -5,7 +5,6 @@ import {
   DatePicker,
   Form,
   Input,
-  message,
   notification,
   Radio,
   Select,
@@ -14,7 +13,7 @@ import { MaskedInput } from "antd-mask-input";
 import { useForm } from "antd/es/form/Form";
 import { useEffect, useState } from "react";
 
-import { debounce, throttle } from "lodash";
+import { debounce } from "lodash";
 import { useGetClientGroupsQuery } from "@shared/api/client.api";
 import { nameRule, requiredRule } from "@shared/lib/rules";
 
