@@ -1,6 +1,6 @@
 import { api } from "./base-api/base.api";
 
-interface NameAutocompleteOption {
+type NameAutocompleteOption = {
   value: string;
   unrestricted_value: string;
   data: {
@@ -9,7 +9,7 @@ interface NameAutocompleteOption {
     patronymic: null | string;
     gender: null | "MALE" | "FEMALE";
   };
-}
+};
 
 // запросы для работы с автозаполнением (dadata.ru)
 export const autocompleteApi = api.injectEndpoints({
