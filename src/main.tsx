@@ -35,7 +35,7 @@ createRoot(document.getElementById("root")!).render(
             borderRadius: 10,
             fontSize: 14,
           },
-          Form: { colorError: redColor },
+          Form: { colorError: redColor, labelFontSize: 12 },
         },
       }}
     >

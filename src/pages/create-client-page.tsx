@@ -1,8 +1,10 @@
 import { useGetNameSuggestionsQuery } from "@shared/api/autocomplete.api";
+import classes from "./create-client-page.module.css";
 import {
   AutoComplete,
   Button,
   DatePicker,
+  Flex,
   Form,
   Input,
   notification,
@@ -16,6 +18,7 @@ import { useEffect, useState } from "react";
 import { debounce } from "lodash";
 import { useGetClientGroupsQuery } from "@shared/api/client.api";
 import { nameRule, requiredRule } from "@shared/lib/rules";
+import { useGetAllDoctorsQuery } from "@shared/api/doctor.api";
 
 export const CreateClientPage = () => {
   const [createClientForm] = useForm();
@@ -25,6 +28,7 @@ export const CreateClientPage = () => {
 
   const { data: nameSuggestions } = useGetNameSuggestionsQuery(name);
   const { data: clientGroups } = useGetClientGroupsQuery();
+  const { data: doctors } = useGetAllDoctorsQuery();
 
   const handleNameChange = debounce((value: string) => {
     setName(value);
@@ -41,6 +45,7 @@ export const CreateClientPage = () => {
         setIsLoading(false);
         notification.success({
           duration: 3,
+          placement: "bottom",
           message: `Клиент ${createClientForm.getFieldValue(
             "name"
           )} успешно создан`,
@@ -51,8 +56,20 @@ export const CreateClientPage = () => {
   }, [isLoading]);
 
   return (
-    <Form form={createClientForm} onFinish={createClient}>
-      <Form.Item name="name" rules={[requiredRule, nameRule]}>
+    <Form
+      form={createClientForm}
+      onFinish={createClient}
+      className={classes.container}
+      layout="vertical"
+      scrollToFirstError={{ behavior: "smooth", block: "end" }}
+    >
+      <h1 className={classes.title}>Создание клиента</h1>
+      <Form.Item
+        name="name"
+        rules={[requiredRule, nameRule]}
+        label="ФИО клиента"
+        layout="vertical"
+      >
         <AutoComplete options={nameSuggestions}>
           <Input
             placeholder="Введите полное имя"
@@ -60,10 +77,15 @@ export const CreateClientPage = () => {
           />
         </AutoComplete>
       </Form.Item>
-      <Form.Item name="birthday" rules={[requiredRule]}>
+      <Form.Item
+        name="birthday"
+        rules={[requiredRule]}
+        layout="vertical"
+        label="Дата рождения"
+      >
         <DatePicker format="DD.MM.YYYY" placeholder="26.05.1993" />
       </Form.Item>
-      <Form.Item name="phone" rules={[requiredRule]}>
+      <Form.Item name="phone" rules={[requiredRule]} label="Номер телефона">
         <MaskedInput
           mask={"+7 000 000-00-00"}
           placeholder="+7 965 621-12-32"
@@ -72,7 +94,7 @@ export const CreateClientPage = () => {
         />
       </Form.Item>
 
-      <Form.Item name="sex" rules={[requiredRule]}>
+      <Form.Item name="sex" rules={[requiredRule]} label="Пол">
         <Radio.Group
           options={[
             { value: "female", label: "жен" },
@@ -84,10 +106,10 @@ export const CreateClientPage = () => {
         </Radio.Group>
       </Form.Item>
 
-      <Form.Item name="groups">
+      <Form.Item name="groups" label="Группы">
         <Select
           mode="multiple"
-          placeholder="Выберите группы клиентов"
+          placeholder="Выберите группы клиента"
           value={selectedGroups}
           onChange={setSelectedGroups}
           style={{ width: "100%" }}
@@ -97,9 +119,19 @@ export const CreateClientPage = () => {
           }))}
         />
       </Form.Item>
-      <Button htmlType="submit" type="primary" loading={isLoading}>
-        Сохранить клиента
-      </Button>
+      <Form.Item name="doctor" label="Лечащий врач">
+        <Select
+          placeholder="Лечащий врач"
+          options={doctors?.map((doctor) => {
+            return { value: doctor.name };
+          })}
+        />
+      </Form.Item>
+      <Flex justify="center">
+        <Button htmlType="submit" type="primary" loading={isLoading}>
+          Сохранить клиента
+        </Button>
+      </Flex>
     </Form>
   );
 };
