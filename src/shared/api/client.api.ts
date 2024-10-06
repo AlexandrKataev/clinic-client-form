@@ -1,5 +1,5 @@
 import { notification } from "antd";
-import { api } from "./base-api/base.api";
+import { api } from "./config/base.api";
 
 interface ClientGroup {
   id: string;
@@ -21,6 +21,7 @@ interface CreateClientDto {
 // запросы для работы с клиентами
 export const clientApi = api.injectEndpoints({
   endpoints: (builder) => ({
+    // фейковый запрос на сохранение клиента
     createClient: builder.mutation<CreateClientDto, CreateClientDto>({
       queryFn: async (createClientDto) => {
         await new Promise((resolve) => {
@@ -36,11 +37,13 @@ export const clientApi = api.injectEndpoints({
         notification.success({
           duration: 3,
           placement: "bottom",
-          description: createClientDto.name,
           message: `Клиент успешно сохранён:`,
+          description: createClientDto.name,
         });
       },
     }),
+
+    // получить все клиентские группы
     getClientGroups: builder.query<ClientGroup[], void>({
       query: () => ({
         url: `https://632a05584c626ff832cfe7bb.mockapi.io/client_groups`,

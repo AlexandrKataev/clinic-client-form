@@ -1,4 +1,4 @@
-import { api } from "./base-api/base.api";
+import { api } from "./config/base.api";
 
 type NameAutocompleteOption = {
   value: string;
@@ -14,10 +14,12 @@ export const autocompleteApi = api.injectEndpoints({
         method: "POST",
       }),
       transformResponse: (res) => {
+        // преобразуем объекты в массиве к нужному типу
         const transformedResponse: NameAutocompleteOption[] =
           res.suggestions.map((suggestion: NameAutocompleteOption) => {
             return { value: suggestion.value };
           });
+        // фильтруем повторяющиеся ответы (иногда приходит два одинаковых значения)
         return transformedResponse.filter((option, i) => {
           return (
             transformedResponse.findIndex(

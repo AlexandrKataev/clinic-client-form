@@ -1,4 +1,4 @@
-import { useGetNameSuggestionsQuery } from "@shared/api/autocomplete.api";
+import { useEffect, useRef, useState } from "react";
 import classes from "./create-client-page.module.css";
 import {
   AutoComplete,
@@ -15,29 +15,30 @@ import {
   Row,
   Select,
 } from "antd";
-import { useForm } from "antd/es/form/Form";
-import { useEffect, useRef, useState } from "react";
 import { InfoCircleOutlined } from "@ant-design/icons";
-
-import { debounce } from "lodash";
+import { useForm } from "antd/es/form/Form";
 import {
   useCreateClientMutation,
   useGetClientGroupsQuery,
 } from "@shared/api/client.api";
+import { useGetDoctorsQuery } from "@shared/api/doctor.api";
 import { clientAgeRule, nameRule, requiredRule } from "@shared/lib/rules";
-import { useGetAllDoctorsQuery } from "@shared/api/doctor.api";
-
-import { formatName } from "@shared/lib/format-name";
+import { debounce } from "lodash";
+import { getFormattedName } from "@shared/lib/get-formatted-name";
+import { getMaskedDate } from "@shared/lib/get-masked-date";
+import { getMaskedPhone } from "@shared/lib/get-masked-phone";
+import { useGetNameSuggestionsQuery } from "@shared/api/autocomplete.api";
 
 export const CreateClientPage = () => {
   const firstFieldRef = useRef<InputRef>(null);
   const [createClientForm] = useForm();
+
   const [name, setName] = useState("");
   const [selectedGroups, setSelectedGroups] = useState<string[]>([]);
 
   const { data: nameSuggestions } = useGetNameSuggestionsQuery(name);
   const { data: clientGroups } = useGetClientGroupsQuery();
-  const { data: doctors } = useGetAllDoctorsQuery();
+  const { data: doctors } = useGetDoctorsQuery();
 
   const [createClient, { isLoading }] = useCreateClientMutation();
 
@@ -45,48 +46,7 @@ export const CreateClientPage = () => {
     setName(value);
   }, 100);
 
-  const normalizeName = (value: string) => {
-    return formatName(value);
-  };
-
-  const normalizeDate = (value: string, prevValue: string) => {
-    if (prevValue?.length > value?.length) {
-      return value;
-    }
-    const number = value.replace(/[^0-9]/g, "");
-
-    let result = "";
-    for (let i = 0; i < number.length; i++) {
-      if (i > 7) break;
-      result += number[i];
-      if (i === 1 || i === 3) {
-        result += ".";
-      }
-    }
-    return result;
-  };
-
-  const normalizePhone = (value: string, prevValue: string) => {
-    if (prevValue?.length > value?.length) {
-      return value;
-    }
-    const number = value
-      .replace(/^\+7/, "")
-      .replace(/^8/, "")
-      .replace(/[^0-9]/g, "");
-
-    let result = "";
-    for (let i = 0; i < number.length; i++) {
-      if (i > 9) break;
-      result += number[i];
-      if (i === 2 || i === 5 || i === 7) {
-        result += " ";
-      }
-    }
-    return result;
-  };
-
-  const handleFinish = async () => {
+  const handleSubmitCreateClientForm = async () => {
     createClient({
       birthday: createClientForm.getFieldValue("birthday"),
       doctorId: createClientForm.getFieldValue("doctor"),
@@ -99,6 +59,7 @@ export const CreateClientPage = () => {
     });
   };
 
+  /* автофокус на первом поле ввода */
   useEffect(() => {
     firstFieldRef.current?.focus();
   }, []);
@@ -106,7 +67,7 @@ export const CreateClientPage = () => {
   return (
     <Form
       form={createClientForm}
-      onFinish={handleFinish}
+      onFinish={handleSubmitCreateClientForm}
       className={classes.container}
       layout="vertical"
       scrollToFirstError={{ behavior: "smooth", block: "end" }}
@@ -117,7 +78,7 @@ export const CreateClientPage = () => {
         rules={[requiredRule, nameRule]}
         label="ФИО клиента"
         layout="vertical"
-        normalize={normalizeName}
+        normalize={getFormattedName}
       >
         <AutoComplete options={nameSuggestions}>
           <Input
@@ -134,7 +95,7 @@ export const CreateClientPage = () => {
             rules={[requiredRule, clientAgeRule]}
             layout="vertical"
             label="Дата рождения"
-            normalize={normalizeDate}
+            normalize={getMaskedDate}
           >
             <Input placeholder="26.05.1993" />
           </Form.Item>
@@ -151,10 +112,7 @@ export const CreateClientPage = () => {
                 { value: "male", label: "муж" },
                 { value: "female", label: "жен" },
               ]}
-            >
-              <Radio>Муж</Radio>
-              <Radio>Жен</Radio>
-            </Radio.Group>
+            />
           </Form.Item>
         </Col>
         <Col xs={24} sm={11}>
@@ -162,7 +120,7 @@ export const CreateClientPage = () => {
             name="phone"
             rules={[requiredRule]}
             label="Номер телефона"
-            normalize={normalizePhone}
+            normalize={getMaskedPhone}
           >
             <Input placeholder="965 621 12 32" prefix={"+7"} type="tel" />
           </Form.Item>

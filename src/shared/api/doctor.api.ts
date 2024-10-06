@@ -1,4 +1,4 @@
-import { api } from "./base-api/base.api";
+import { api } from "./config/base.api";
 
 export interface Doctor {
   id: string;
@@ -9,7 +9,7 @@ export interface Doctor {
 // запросы для работы с автозаполнением (dadata.ru)
 export const doctorApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    getAllDoctors: builder.query<Doctor[], void>({
+    getDoctors: builder.query<Doctor[], void>({
       query: () => ({
         url: `https://632a05584c626ff832cfe7bb.mockapi.io/doctors`,
         method: "GET",
@@ -18,4 +18,4 @@ export const doctorApi = api.injectEndpoints({
   }),
 });
 
-export const { useGetAllDoctorsQuery } = doctorApi;
+export const { useGetDoctorsQuery } = doctorApi;
