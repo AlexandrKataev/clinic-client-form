@@ -47,7 +47,7 @@ export const CreateClientPage = () => {
   }, 100);
 
   const handleSubmitCreateClientForm = async () => {
-    createClient({
+    await createClient({
       birthday: createClientForm.getFieldValue("birthday"),
       doctorId: createClientForm.getFieldValue("doctor"),
       groups: createClientForm.getFieldValue("groups"),
@@ -57,6 +57,7 @@ export const CreateClientPage = () => {
       sex: createClientForm.getFieldValue("sex"),
       disableSms: Boolean(createClientForm.getFieldValue("disableSms")),
     });
+    createClientForm.resetFields();
   };
 
   /* автофокус на первом поле ввода */
@@ -92,7 +93,7 @@ export const CreateClientPage = () => {
         <Col xs={24} sm={7}>
           <Form.Item
             name="birthday"
-            rules={[requiredRule, clientAgeRule]}
+            rules={[clientAgeRule]}
             layout="vertical"
             label="Дата рождения"
             normalize={getMaskedDate}
