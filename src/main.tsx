@@ -19,6 +19,8 @@ createRoot(document.getElementById("root")!).render(
       theme={{
         token: {
           colorText: "#27293b",
+          colorPrimary: colorBlue,
+          colorPrimaryActive: colorBlue,
         },
         components: {
           Button: {
@@ -53,6 +55,7 @@ createRoot(document.getElementById("root")!).render(
             colorError: colorRed,
             colorPrimary: colorBlue,
           },
+          Checkbox: {},
         },
       }}
     >
