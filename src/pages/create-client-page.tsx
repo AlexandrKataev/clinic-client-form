@@ -163,9 +163,8 @@ export const CreateClientPage = () => {
             rules={[requiredRule]}
             label="Номер телефона"
             normalize={normalizePhone}
-            // style={{ width: "200px" }}
           >
-            <Input placeholder="965 621 12 32" prefix={"+7"} />
+            <Input placeholder="965 621 12 32" prefix={"+7"} type="tel" />
           </Form.Item>
         </Col>
       </Row>
