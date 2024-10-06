@@ -8,6 +8,7 @@ import {
   Form,
   Image,
   Input,
+  InputNumber,
   notification,
   Radio,
   Select,
@@ -20,6 +21,8 @@ import { debounce } from "lodash";
 import { useGetClientGroupsQuery } from "@shared/api/client.api";
 import { nameRule, requiredRule } from "@shared/lib/rules";
 import { useGetAllDoctorsQuery } from "@shared/api/doctor.api";
+import { DateInput } from "@shared/ui/DateInput";
+import { PhoneInput } from "@shared/ui/PhoneInput";
 
 export const CreateClientPage = () => {
   const [createClientForm] = useForm();
@@ -56,6 +59,10 @@ export const CreateClientPage = () => {
     }, 1000);
   }, [isLoading]);
 
+  // const handleChangeDate = (value) => {
+  //   createClientForm.setFieldValue("birthday", "100000");
+  // };
+
   return (
     <Form
       form={createClientForm}
@@ -84,15 +91,24 @@ export const CreateClientPage = () => {
         layout="vertical"
         label="Дата рождения"
       >
-        <DatePicker format="DD.MM.YYYY" placeholder="26.05.1993" />
+        {/* <DatePicker format="DD.MM.YYYY" placeholder="26.05.1993" /> */}
+        {/* <Input /> */}
+        <DateInput />
+        {/* <InputNumber
+          stringMode={true}
+          formatter={formatDate}
+          prefix={"+7"}
+          style={{ width: "100%" }}
+        /> */}
       </Form.Item>
       <Form.Item name="phone" rules={[requiredRule]} label="Номер телефона">
-        <MaskedInput
+        {/* <MaskedInput
           mask={"+7 000 000-00-00"}
           placeholder="+7 965 621-12-32"
           maskOptions={{ padFractionalZeros: true }}
           onPaste={() => "123"}
-        />
+        /> */}
+        <PhoneInput />
       </Form.Item>
 
       <Form.Item name="sex" rules={[requiredRule]} label="Пол">
