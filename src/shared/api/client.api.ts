@@ -1,3 +1,4 @@
+import { notification } from "antd";
 import { api } from "./base-api/base.api";
 
 interface ClientGroup {
@@ -7,24 +8,38 @@ interface ClientGroup {
   description: string;
 }
 
-interface Client {
+interface CreateClientDto {
   name: string;
-  birthday: Date;
+  birthday: string;
   phone: string;
-  sex: "male" | "female" | null;
+  sex: "male" | "female";
   groups: ClientGroup[];
+  doctorId: string;
+  disableSms: boolean;
 }
 
 // запросы для работы с клиентами
 export const clientApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    createClient: builder.mutation<Client[], string>({
-      query: (name) => ({
-        url: `/`,
-        body: { query: name },
-        method: "POST",
-      }),
-      transformResponse: (res) => res.suggestions,
+    createClient: builder.mutation<CreateClientDto, CreateClientDto>({
+      queryFn: async (createClientDto) => {
+        await new Promise((resolve) => {
+          setTimeout(() => {
+            resolve("");
+          }, 1500);
+        });
+        return createClientDto;
+      },
+      async onQueryStarted(createClientDto, { queryFulfilled }) {
+        await queryFulfilled;
+        console.log(createClientDto);
+        notification.success({
+          duration: 3,
+          placement: "bottom",
+          description: createClientDto.name,
+          message: `Клиент успешно сохранён:`,
+        });
+      },
     }),
     getClientGroups: builder.query<ClientGroup[], void>({
       query: () => ({

@@ -1,6 +1,6 @@
 import { api } from "./base-api/base.api";
 
-interface Doctor {
+export interface Doctor {
   id: string;
   name: string;
   avatar: string;
