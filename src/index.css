@@ -7,6 +7,16 @@ body {
     circle,
     rgba(196, 240, 232, 1) 0%,
     rgba(220, 240, 242, 1) 34%,
-    rgba(104, 212, 235, 1) 100%
+    #68d4eb 100%
   );
+}
+
+
+/* Отключить стили автозаполнения */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: #000 !important;
 }

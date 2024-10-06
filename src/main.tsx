@@ -8,36 +8,51 @@ import { store } from "@app/store";
 import { Provider } from "react-redux";
 import { ConfigProvider } from "antd";
 
-const redColor = "#EF233C";
+const colorBlack = "#27293b";
+const colorBlue = "#00c9d1";
+const colorRed = "#ff85b2";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ConfigProvider
       locale={ru_RU}
       theme={{
+        token: {
+          colorText: "#27293b",
+        },
         components: {
-          Button: { colorPrimary: "#6288eb", fontSizeLG: 15 },
+          Button: {
+            colorPrimary: "#0cacde",
+            colorPrimaryActive: "#19b4e3",
+            fontSizeLG: 15,
+            colorPrimaryHover: "#19b4e3",
+          },
           Input: {
-            // colorPrimary: "yellow",
-            colorError: redColor,
-            colorTextLabel: "yellow",
+            colorError: colorRed,
+            colorErrorHover: colorRed,
+            colorText: colorBlack,
             colorInfoText: "red",
             borderRadius: 10,
-            fontSize: 12,
-          },
-          DatePicker: {
-            borderRadius: 10,
+            activeBorderColor: colorBlue,
+            hoverBorderColor: colorBlue,
             fontSize: 14,
-          },
-          Dropdown: {
-            colorBgBase: "red",
-            colorBgContainer: "red",
           },
           Select: {
+            activeBorderColor: colorBlue,
+            hoverBorderColor: colorBlue,
+            colorError: colorRed,
             borderRadius: 10,
             fontSize: 14,
           },
-          Form: { colorError: redColor, labelFontSize: 13 },
+          Form: {
+            colorError: colorRed,
+            colorErrorHover: colorRed,
+            labelFontSize: 13,
+          },
+          Radio: {
+            colorError: colorRed,
+            colorPrimary: colorBlue,
+          },
         },
       }}
     >
