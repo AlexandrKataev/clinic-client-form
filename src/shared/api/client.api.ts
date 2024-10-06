@@ -28,7 +28,7 @@ export const clientApi = api.injectEndpoints({
             resolve("");
           }, 1500);
         });
-        return createClientDto;
+        return { data: createClientDto };
       },
       async onQueryStarted(createClientDto, { queryFulfilled }) {
         await queryFulfilled;
@@ -46,7 +46,6 @@ export const clientApi = api.injectEndpoints({
         url: `https://632a05584c626ff832cfe7bb.mockapi.io/client_groups`,
         method: "GET",
       }),
-      //   transformResponse: (res) => res.suggestions,
     }),
   }),
 });

@@ -14,15 +14,15 @@ export const autocompleteApi = api.injectEndpoints({
         method: "POST",
       }),
       transformResponse: (res) => {
-        const transformedResponse = res.suggestions.map(
-          (suggestion: NameAutocompleteOption) => {
+        const transformedResponse: NameAutocompleteOption[] =
+          res.suggestions.map((suggestion: NameAutocompleteOption) => {
             return { value: suggestion.value };
-          }
-        );
-        return transformedResponse.filter((item, index) => {
+          });
+        return transformedResponse.filter((option, i) => {
           return (
-            transformedResponse.findIndex((obj) => obj.value === item.value) ===
-            index
+            transformedResponse.findIndex(
+              (transformedOption) => transformedOption.value === option.value
+            ) === i
           );
         });
       },

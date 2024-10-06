@@ -28,7 +28,6 @@ import { clientAgeRule, nameRule, requiredRule } from "@shared/lib/rules";
 import { useGetAllDoctorsQuery } from "@shared/api/doctor.api";
 
 import { formatName } from "@shared/lib/format-name";
-import dayjs from "dayjs";
 
 export const CreateClientPage = () => {
   const firstFieldRef = useRef<InputRef>(null);
