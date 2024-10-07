@@ -94,7 +94,7 @@ export const CreateClientPage = () => {
       <h1 className={classes.title}>Создание клиента</h1>
       <Form.Item
         name="name"
-        rules={[requiredRule, nameRule]}
+        rules={[nameRule]}
         label="ФИО клиента"
         layout="vertical"
         normalize={getFormattedName}

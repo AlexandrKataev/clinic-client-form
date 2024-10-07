@@ -10,12 +10,14 @@ export const requiredRule: Rule = {
 };
 
 export const nameRule: Rule = {
+  required: true,
   min: 6,
   max: 50,
   message: "Имя должно содержать от 6 до 50 символов",
 };
 
 export const clientAgeRule: Rule = {
+  required: true,
   min: 14,
   max: 60,
   transform: (value) => {
