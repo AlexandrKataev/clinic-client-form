@@ -29,7 +29,7 @@ export const clientAgeRule: Rule = {
 export const phoneRule: Rule = {
   required: true,
   transform: (value) => {
-    return value.replace(/\s+/g, "");
+    return value ? value.replace(/\s+/g, "") : value;
   },
   pattern: /^\+79\d{9}$/,
   message: "Введите корректный номер",
