@@ -19,7 +19,7 @@ export const autocompleteApi = api.injectEndpoints({
           res.suggestions.map((suggestion: NameAutocompleteOption) => {
             return { value: suggestion.value };
           });
-        // фильтруем повторяющиеся ответы (иногда приходит два одинаковых значения)
+        // фильтруем повторяющиеся ответы (приходит два одинаковых значения, если dadata не понимает фамилия это или имя)
         return transformedResponse.filter((option, i) => {
           return (
             transformedResponse.findIndex(

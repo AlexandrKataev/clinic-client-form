@@ -28,6 +28,5 @@ const baseQuery = async (
 export const api = createApi({
   reducerPath: "api",
   baseQuery: baseQuery,
-  tagTypes: [],
   endpoints: () => ({}),
 });
