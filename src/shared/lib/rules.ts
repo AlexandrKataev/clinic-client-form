@@ -23,3 +23,12 @@ export const clientAgeRule: Rule = {
   },
   message: "Возраст от 14 до 65 лет",
 };
+
+export const phoneRule: Rule = {
+  required: true,
+  transform: (value) => {
+    return value.replace(/\s+/g, "");
+  },
+  pattern: /^\+79\d{9}$/,
+  message: "Введите корректный номер",
+};

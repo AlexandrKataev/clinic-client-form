@@ -1,4 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  ClipboardEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import classes from "./create-client-page.module.css";
 import {
   AutoComplete,
@@ -22,7 +28,12 @@ import {
   useGetClientGroupsQuery,
 } from "@shared/api/client.api";
 import { useGetDoctorsQuery } from "@shared/api/doctor.api";
-import { clientAgeRule, nameRule, requiredRule } from "@shared/lib/rules";
+import {
+  clientAgeRule,
+  nameRule,
+  phoneRule,
+  requiredRule,
+} from "@shared/lib/rules";
 import { debounce } from "lodash";
 import { getFormattedName } from "@shared/lib/get-formatted-name";
 import { getMaskedDate } from "@shared/lib/get-masked-date";
@@ -42,9 +53,17 @@ export const CreateClientPage = () => {
 
   const [createClient, { isLoading }] = useCreateClientMutation();
 
-  const handleNameChange = debounce((value: string) => {
-    setName(value);
+  const handleNameChange = debounce((e: ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
   }, 100);
+
+  const handlePastePhone = (e: ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    createClientForm.setFieldValue(
+      "phone",
+      getMaskedPhone(e.clipboardData.getData("text"))
+    );
+  };
 
   const handleSubmitCreateClientForm = async () => {
     await createClient({
@@ -52,8 +71,7 @@ export const CreateClientPage = () => {
       doctorId: createClientForm.getFieldValue("doctor"),
       groups: createClientForm.getFieldValue("groups"),
       name: createClientForm.getFieldValue("name").trim(),
-      phone:
-        "+7" + createClientForm.getFieldValue("phone").trim().replace(/ /g, ""),
+      phone: createClientForm.getFieldValue("phone").trim().replace(/ /g, ""),
       sex: createClientForm.getFieldValue("sex"),
       disableSms: Boolean(createClientForm.getFieldValue("disableSms")),
     });
@@ -85,7 +103,7 @@ export const CreateClientPage = () => {
           <Input
             ref={firstFieldRef}
             placeholder="Введите полное имя"
-            onChange={(e) => handleNameChange(e.target.value)}
+            onChange={handleNameChange}
           />
         </AutoComplete>
       </Form.Item>
@@ -119,11 +137,15 @@ export const CreateClientPage = () => {
         <Col xs={24} sm={11}>
           <Form.Item
             name="phone"
-            rules={[requiredRule]}
+            rules={[phoneRule]}
             label="Номер телефона"
             normalize={getMaskedPhone}
           >
-            <Input placeholder="965 621 12 32" prefix={"+7"} type="tel" />
+            <Input
+              placeholder="+7 965 621 12 32"
+              type="tel"
+              onPaste={(e) => handlePastePhone(e)}
+            />
           </Form.Item>
         </Col>
       </Row>
